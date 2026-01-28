@@ -1,35 +1,60 @@
 import React, { useState } from "react";
-import ReactDOM from "react-dom/client"
 
-export const Input=()=>{
-    const [task, setTask] = useState("");
-    const [tasks,setTasks]=useState([]);
-    const toggleTask=(index)=>{
-    const newTasks=[...tasks];
-    newTasks[index].completed=!newTasks[index].completed;
-    setTasks(newTasks);
-    };
+export const Input = () => {
+  const [count, setCount] = useState(0);
+  const [step, setStep] = useState(1);
 
-return (
-    <div className="outer flex flex-col items-center gap-2 bg-slate-400 rounded-lg shadow-md p-4 border border-gray-200 w-72 align-middle ml-[39%]">
-        <input className=" inputbox flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="Enter Task"
-                value={task} onChange={(e) => setTask(e.target.value)}
-/>
-        <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-2 rounded-md transition duration-200" onClick={
-            ()=>{
-                if(task.trim()==="")return ;
-                setTasks([...tasks,{
-                    text:task,completed:false
-                }]);
-                setTask("");
-            }
-        }>Add</button>
-        <div className="mt-4">
-            {tasks.map((item,index)=>(
-                <div key={index} 
-                onClick ={()=>toggleTask(index)}className={`p-2  cursor-pointer ${item.completed ? "line-through text-black-400 opacity-60":""}`}>{item.text}</div>
-            ))}
+  return (
+    <div className=" flex items-center justify-center">
+      
+      {/* Card */}
+      <div className="bg-white p-6 rounded-2xl shadow-lg w-72 text-center">
+        
+        {/* Count */}
+        <span className="block text-2xl font-bold text-gray-800 mb-4">
+          Count: {count}
+        </span>
+
+        {/* Input */}
+        <div className="mb-4">
+          <input
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            placeholder="Add step"
+            type="number"
+            value={step}
+            onChange={(e) => setStep(Number(e.target.value))}
+          />
         </div>
+
+        {/* Buttons */}
+        <div className="flex flex-col gap-3">
+          
+          <button
+            className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded-lg transition"
+            onClick={() => setCount((prev) => prev + step)}
+          >
+            +{step}
+          </button>
+
+          <button
+            className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg transition"
+            onClick={() => {setCount((prev) => prev - step);
+            }}
+          >
+            -{step}
+          </button>
+
+          <button
+            className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 rounded-lg transition"
+            onClick={() => {setCount(0);
+              setStep(0);
+            }}
+          >
+            Reset
+          </button>
+
+        </div>
+      </div>
     </div>
-)
-}
+  );
+};
